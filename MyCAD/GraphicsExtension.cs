@@ -32,5 +32,14 @@ namespace MyCAD
             graphics.DrawLine(pen, line.StartPoint.ToPointF, line.EndPoint.ToPointF);
             graphics.ResetTransform();
         }
+        public static void DrawCircle(this System.Drawing.Graphics graphics, System.Drawing.Pen pen, Entities.Circle circle)
+        {
+            float x = (float)(circle.Center.X - circle.Radius);
+            float y = (float)(circle.Center.Y - circle.Radius);
+            float d = (float)circle.Diameter;
+            graphics.SetTransform();
+            graphics.DrawEllipse(pen, x, y, d, d);
+            graphics.ResetTransform();
+        }
     }
 }

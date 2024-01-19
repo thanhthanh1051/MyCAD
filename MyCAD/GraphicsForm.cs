@@ -18,6 +18,7 @@ namespace MyCAD
         }
         private LinkedList<Entities.Point> points = new LinkedList<Entities.Point>();
         private LinkedList<Entities.Line> lines = new LinkedList<Entities.Line>();
+        private LinkedList<Entities.Circle> circles = new LinkedList<Entities.Circle>();
         private Vector3 currentPosition;
         private Vector3 firstPoint;
         private int ClickNum = 1;
@@ -65,7 +66,7 @@ namespace MyCAD
                         case 0:
                             points.AddLast(new Entities.Point(currentPosition));
                             break;
-                        case 1:
+                        case 1://line
                             switch (ClickNum)
                             {
                                 case 1:   
@@ -77,6 +78,22 @@ namespace MyCAD
                                     lines.AddLast(new Entities.Line(firstPoint, currentPosition));
                                     points.AddLast(new Entities.Point(currentPosition));
                                     firstPoint = currentPosition;
+                                    break;
+                            }
+                            break;
+                        case 2://circle
+                            switch (ClickNum)
+                            {
+                                case 1:
+                                    firstPoint = currentPosition;
+                                    points.AddLast(new Entities.Point(currentPosition));
+                                    ClickNum++;
+                                    break;
+                                case 2:
+                                    double r = firstPoint.DistanceFrom(currentPosition);
+                                    circles.AddLast(new Entities.Circle(firstPoint, r));
+                                    points.AddLast(new Entities.Point(currentPosition));
+                                    ClickNum = 1;
                                     break;
                             }
                             break;
@@ -107,6 +124,14 @@ namespace MyCAD
                     e.Graphics.DrawLine(pen, line);
                 }
             }
+            if(circles.Count > 0)
+            {
+                foreach(Entities.Circle circle in circles)
+                {
+                    e.Graphics.DrawCircle(pen, circle);
+                }
+            }
+            //Draw line extended
             switch(DrawIndex)
             {
                 case 1:
@@ -116,7 +141,18 @@ namespace MyCAD
                         e.Graphics.DrawLine(extpen, line);
                     }
                     break;
+                case 2:
+                    if(ClickNum == 2)
+                    {
+                        Entities.Line line = new Entities.Line(firstPoint, currentPosition);
+                        e.Graphics.DrawLine(extpen, line);
+                        double r = firstPoint.DistanceFrom(currentPosition);
+                        Entities.Circle circle = new Entities.Circle(firstPoint, r);
+                        e.Graphics.DrawCircle(extpen, circle);
+                    }
+                    break;
             }
+
         }
 
         private void pointBtn_Click(object sender, EventArgs e)
@@ -129,6 +165,13 @@ namespace MyCAD
         private void lineBtn_Click(object sender, EventArgs e)
         {
             DrawIndex = 1;
+            active_drawing = true;
+            drawing.Cursor = Cursors.Cross;
+        }
+
+        private void circleBtn_Click(object sender, EventArgs e)
+        {
+            DrawIndex = 2;
             active_drawing = true;
             drawing.Cursor = Cursors.Cross;
         }
