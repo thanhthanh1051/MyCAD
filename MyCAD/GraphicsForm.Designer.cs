@@ -31,6 +31,7 @@
             this.drawing = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.pointBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.drawing)).BeginInit();
             this.SuspendLayout();
             // 
@@ -45,6 +46,8 @@
             this.drawing.Size = new System.Drawing.Size(1074, 512);
             this.drawing.TabIndex = 0;
             this.drawing.TabStop = false;
+            this.drawing.Paint += new System.Windows.Forms.PaintEventHandler(this.drawing_Paint);
+            this.drawing.MouseDown += new System.Windows.Forms.MouseEventHandler(this.drawing_MouseDown);
             this.drawing.MouseMove += new System.Windows.Forms.MouseEventHandler(this.drawing_MouseMove);
             // 
             // label1
@@ -65,11 +68,22 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "label2";
             // 
+            // pointBtn
+            // 
+            this.pointBtn.Location = new System.Drawing.Point(1111, 34);
+            this.pointBtn.Name = "pointBtn";
+            this.pointBtn.Size = new System.Drawing.Size(118, 32);
+            this.pointBtn.TabIndex = 3;
+            this.pointBtn.Text = "Point";
+            this.pointBtn.UseVisualStyleBackColor = true;
+            this.pointBtn.Click += new System.EventHandler(this.pointBtn_Click);
+            // 
             // GraphicsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1257, 627);
+            this.Controls.Add(this.pointBtn);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.drawing);
@@ -88,6 +102,7 @@
         private System.Windows.Forms.PictureBox drawing;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button pointBtn;
     }
 }
 
