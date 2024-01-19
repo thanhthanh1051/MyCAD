@@ -32,6 +32,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.pointBtn = new System.Windows.Forms.Button();
+            this.lineBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.drawing)).BeginInit();
             this.SuspendLayout();
             // 
@@ -70,7 +71,7 @@
             // 
             // pointBtn
             // 
-            this.pointBtn.Location = new System.Drawing.Point(1111, 34);
+            this.pointBtn.Location = new System.Drawing.Point(1108, 32);
             this.pointBtn.Name = "pointBtn";
             this.pointBtn.Size = new System.Drawing.Size(118, 32);
             this.pointBtn.TabIndex = 3;
@@ -78,11 +79,22 @@
             this.pointBtn.UseVisualStyleBackColor = true;
             this.pointBtn.Click += new System.EventHandler(this.pointBtn_Click);
             // 
+            // lineBtn
+            // 
+            this.lineBtn.Location = new System.Drawing.Point(1108, 92);
+            this.lineBtn.Name = "lineBtn";
+            this.lineBtn.Size = new System.Drawing.Size(117, 37);
+            this.lineBtn.TabIndex = 4;
+            this.lineBtn.Text = "Line";
+            this.lineBtn.UseVisualStyleBackColor = true;
+            this.lineBtn.Click += new System.EventHandler(this.lineBtn_Click);
+            // 
             // GraphicsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1257, 627);
+            this.Controls.Add(this.lineBtn);
             this.Controls.Add(this.pointBtn);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -103,6 +115,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button pointBtn;
+        private System.Windows.Forms.Button lineBtn;
     }
 }
 

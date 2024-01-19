@@ -26,5 +26,11 @@ namespace MyCAD
             graphics.DrawEllipse(pen, p.X-1, p.Y-1, 2, 2);
             graphics.ResetTransform();
         }
+        public static void DrawLine(this System.Drawing.Graphics graphics, System.Drawing.Pen pen, Entities.Line line)
+        {
+            graphics.SetTransform();
+            graphics.DrawLine(pen, line.StartPoint.ToPointF, line.EndPoint.ToPointF);
+            graphics.ResetTransform();
+        }
     }
 }
