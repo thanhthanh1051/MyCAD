@@ -30,13 +30,14 @@
         {
             this.components = new System.ComponentModel.Container();
             this.drawing = new System.Windows.Forms.PictureBox();
+            this.menuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.pointBtn = new System.Windows.Forms.Button();
             this.lineBtn = new System.Windows.Forms.Button();
             this.circleBtn = new System.Windows.Forms.Button();
             this.ellipseBtn = new System.Windows.Forms.Button();
-            this.menuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.circleBtn1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.drawing)).BeginInit();
             this.SuspendLayout();
             // 
@@ -55,6 +56,13 @@
             this.drawing.Paint += new System.Windows.Forms.PaintEventHandler(this.drawing_Paint);
             this.drawing.MouseDown += new System.Windows.Forms.MouseEventHandler(this.drawing_MouseDown);
             this.drawing.MouseMove += new System.Windows.Forms.MouseEventHandler(this.drawing_MouseMove);
+            // 
+            // menuStrip
+            // 
+            this.menuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(61, 4);
+            this.menuStrip.Text = "menuStrip";
             // 
             // label1
             // 
@@ -114,18 +122,22 @@
             this.ellipseBtn.UseVisualStyleBackColor = true;
             this.ellipseBtn.Click += new System.EventHandler(this.ellipseBtn_Click);
             // 
-            // menuStrip
+            // circleBtn1
             // 
-            this.menuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(61, 4);
-            this.menuStrip.Text = "menuStrip";
+            this.circleBtn1.Location = new System.Drawing.Point(1098, 264);
+            this.circleBtn1.Name = "circleBtn1";
+            this.circleBtn1.Size = new System.Drawing.Size(137, 37);
+            this.circleBtn1.TabIndex = 7;
+            this.circleBtn1.Text = "Circle w 3p";
+            this.circleBtn1.UseVisualStyleBackColor = true;
+            this.circleBtn1.Click += new System.EventHandler(this.circleBtn1_Click);
             // 
             // GraphicsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1257, 627);
+            this.Controls.Add(this.circleBtn1);
             this.Controls.Add(this.ellipseBtn);
             this.Controls.Add(this.circleBtn);
             this.Controls.Add(this.lineBtn);
@@ -154,6 +166,7 @@
         private System.Windows.Forms.Button circleBtn;
         private System.Windows.Forms.Button ellipseBtn;
         private System.Windows.Forms.ContextMenuStrip menuStrip;
+        private System.Windows.Forms.Button circleBtn1;
     }
 }
 

@@ -76,5 +76,29 @@ namespace MyCAD.Methods
         {
             return d >= -epsilon && d <= epsilon;
         }
+        public static Circle GetCircleWith3Point(Vector3 p1, Vector3 p2, Vector3 p3)
+        {
+            double x1 = (p1.X + p2.X) / 2;
+            double y1 = (p1.Y + p2.Y) / 2;
+            double dx1 = p2.X - p1.X;
+            double dy1 = p2.Y - p1.Y;
+
+            double x2 = (p2.X + p3.X) / 2;
+            double y2 = (p2.Y + p3.Y) / 2;
+            double dx2 = p3.X - p2.X;
+            double dy2 = p3.Y - p2.Y;
+
+            Line line1 = new Line(new Vector3(x1, y1), new Vector3(x1 - dy1, y1 +dx1));
+            Line line2 = new Line(new Vector3(x2, y2), new Vector3(x2 - dx2, y2 +dx2));
+
+            Vector3 center = LineLineIntersection(line1, line2, true);
+
+            double dx = center.X - p1.X;
+            double dy = center.Y - p1.Y;
+
+            double radius = Math.Sqrt(dx * dx + dy * dy);
+
+            return new Circle(center, radius);
+        }
     }
 }

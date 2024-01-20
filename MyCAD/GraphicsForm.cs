@@ -134,6 +134,24 @@ namespace MyCAD
                                     break;
                             }
                             break;
+                        case 4: //Circle with 3 point
+                            switch (ClickNum)
+                            {
+                                case 1:
+                                    firstPoint = currentPosition;
+                                    ClickNum++;
+                                    break;
+                                case 2:
+                                    secondPoint = currentPosition;
+                                    ClickNum++;
+                                    break;
+                                case 3:
+                                    Entities.Circle c = Methods.Method.GetCircleWith3Point(firstPoint, secondPoint, currentPosition);
+                                    circles.AddLast(c);
+                                    CancelAll();
+                                    break;
+                            }
+                                    break;
                     }
                     drawing.Refresh();
                 }
@@ -150,6 +168,7 @@ namespace MyCAD
             e.Graphics.SetParameters(Pixel_to_Mn(drawing.Height));
             Pen pen = new Pen(Color.Blue, 1.0f);
             Pen extpen = new Pen(Color.Gray, 1.0f);
+            extpen.DashPattern = new float[] { 1.0f, 2.0f };
             //Draw all points
             if(points.Count > 0)
             {
@@ -215,6 +234,19 @@ namespace MyCAD
                             break;
                     }
                     break;
+                case 4:
+                    switch (ClickNum)
+                    {
+                        case 2:
+                            Entities.Line line = new Entities.Line(firstPoint, currentPosition);
+                            e.Graphics.DrawLine(extpen, line);
+                            break;
+                        case 3:
+                            Entities.Circle c = Methods.Method.GetCircleWith3Point(firstPoint, secondPoint, currentPosition);
+                            e.Graphics.DrawCircle(extpen, c);
+                            break;
+                    }
+                            break;
             }
             //Test line line intersection
             if (lines.Count > 0)
@@ -274,6 +306,13 @@ namespace MyCAD
         {
             InitializeContextMenu();
             this.ContextMenuStrip = contextMenuStrip1;
+        }
+
+        private void circleBtn1_Click(object sender, EventArgs e)
+        {
+            DrawIndex = 4;
+            active_drawing = true;
+            drawing.Cursor = Cursors.Cross;
         }
     }
 }
