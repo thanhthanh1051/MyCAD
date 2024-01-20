@@ -41,5 +41,13 @@ namespace MyCAD
             graphics.DrawEllipse(pen, x, y, d, d);
             graphics.ResetTransform();
         }
+        public static void DrawEllipse(this System.Drawing.Graphics graphics, System.Drawing.Pen pen, Entities.Ellipse ellipse)
+        {
+            SetTransform(graphics);
+            graphics.TranslateTransform(ellipse.Center.ToPointF.X, ellipse.Center.ToPointF.Y);
+            graphics.RotateTransform((float)ellipse.Rotation);
+            graphics.DrawEllipse(pen, -(float)ellipse.MajorAxis, -(float)ellipse.MinorAxis,(float)ellipse.MajorAxis*2, (float)ellipse.MinorAxis * 2);
+            graphics.ResetTransform();
+        }
     }
 }

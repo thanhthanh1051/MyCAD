@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyCAD.Methods;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,8 +20,10 @@ namespace MyCAD
         private LinkedList<Entities.Point> points = new LinkedList<Entities.Point>();
         private LinkedList<Entities.Line> lines = new LinkedList<Entities.Line>();
         private LinkedList<Entities.Circle> circles = new LinkedList<Entities.Circle>();
+        private LinkedList<Entities.Ellipse> ellipses = new LinkedList<Entities.Ellipse>();
         private Vector3 currentPosition;
         private Vector3 firstPoint;
+        private Vector3 secondPoint;
         private int ClickNum = 1;
         private int DrawIndex = -1;
         private bool active_drawing = false;
@@ -97,6 +100,26 @@ namespace MyCAD
                                     break;
                             }
                             break;
+                        case 3://Ellipes
+                            switch (ClickNum)
+                            {
+                                case 1:
+                                    firstPoint = currentPosition;
+                                    ClickNum++;
+                                    break;
+                                case 2:
+                                    secondPoint = currentPosition;
+                                    ClickNum++;
+                                    break;
+                                case 3:
+                                    Entities.Ellipse ellipse = Method.GetEllipse(firstPoint, secondPoint,currentPosition);
+                                    ellipses.AddLast(ellipse);
+                                    ClickNum = 1;
+                                    active_drawing = false;
+                                    drawing.Cursor = Cursors.Default;
+                                    break;
+                            }
+                            break;
                     }
                     drawing.Refresh();
                 }
@@ -131,8 +154,16 @@ namespace MyCAD
                     e.Graphics.DrawCircle(pen, circle);
                 }
             }
+            //Draw all ellipse
+            if (ellipses.Count > 0)
+            {
+                foreach (Entities.Ellipse elp in ellipses)
+                {
+                    e.Graphics.DrawEllipse(pen, elp);
+                }
+            }
             //Draw line extended
-            switch(DrawIndex)
+            switch (DrawIndex)
             {
                 case 1:
                     if(ClickNum == 2)
@@ -149,6 +180,20 @@ namespace MyCAD
                         double r = firstPoint.DistanceFrom(currentPosition);
                         Entities.Circle circle = new Entities.Circle(firstPoint, r);
                         e.Graphics.DrawCircle(extpen, circle);
+                    }
+                    break;
+                case 3:
+                    switch (ClickNum) {
+                        case 2:
+                            Entities.Line line = new Entities.Line(firstPoint, currentPosition);
+                            e.Graphics.DrawLine(extpen, line);
+                            break;
+                        case 3:
+                            Entities.Line line1 = new Entities.Line(firstPoint, currentPosition);
+                            e.Graphics.DrawLine(extpen, line1);
+                            Entities.Ellipse elp = Method.GetEllipse(firstPoint, secondPoint, currentPosition);
+                            e.Graphics.DrawEllipse(extpen, elp);
+                            break;
                     }
                     break;
             }
@@ -172,6 +217,13 @@ namespace MyCAD
         private void circleBtn_Click(object sender, EventArgs e)
         {
             DrawIndex = 2;
+            active_drawing = true;
+            drawing.Cursor = Cursors.Cross;
+        }
+
+        private void ellipseBtn_Click(object sender, EventArgs e)
+        {
+            DrawIndex = 3;
             active_drawing = true;
             drawing.Cursor = Cursors.Cross;
         }
