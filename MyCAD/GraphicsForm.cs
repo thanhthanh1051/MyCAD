@@ -13,6 +13,20 @@ namespace MyCAD
 {
     public partial class GraphicsForm : Form
     {
+        ContextMenuStrip contextMenuStrip1;
+        ToolStripMenuItem cancelMenuItem;
+        private void InitializeContextMenu()
+        {
+            // Khởi tạo ContextMenuStrip
+            contextMenuStrip1 = new ContextMenuStrip();
+
+            // Khởi tạo MenuItem "Cancel"
+            cancelMenuItem = new ToolStripMenuItem("Cancel");
+            cancelMenuItem.Click += cancelToolStripMenuItem_Click;
+
+            // Thêm MenuItem "Cancel" vào ContextMenuStrip
+            contextMenuStrip1.Items.Add(cancelMenuItem);
+        }
         public GraphicsForm()
         {
             InitializeComponent();
@@ -124,6 +138,11 @@ namespace MyCAD
                     drawing.Refresh();
                 }
             }
+            if (e.Button == MouseButtons.Right)
+            {
+                // Hiển thị ContextMenuStrip tại vị trí của chuột
+                contextMenuStrip1.Show(this, e.Location);
+            }
         }
 
         private void drawing_Paint(object sender, PaintEventArgs e)
@@ -145,7 +164,7 @@ namespace MyCAD
                 foreach(Entities.Line line in lines)
                 {
                     e.Graphics.DrawLine(pen, line);
-                }
+                }     
             }
             if(circles.Count > 0)
             {
@@ -197,7 +216,19 @@ namespace MyCAD
                     }
                     break;
             }
-
+            //Test line line intersection
+            if (lines.Count > 0)
+            {
+                foreach (Entities.Line l1 in lines)
+                {
+                    foreach (Entities.Line l2 in lines)
+                    {
+                        Vector3 v = Methods.Method.LineLineIntersection(l1, l2,true);
+                        Entities.Point p = new Entities.Point(v);
+                        e.Graphics.DrawPoint(new Pen(Color.Red, 0), p);
+                    }
+                }
+            }
         }
 
         private void pointBtn_Click(object sender, EventArgs e)
@@ -226,6 +257,23 @@ namespace MyCAD
             DrawIndex = 3;
             active_drawing = true;
             drawing.Cursor = Cursors.Cross;
+        }
+        private void CancelAll()
+        {
+            DrawIndex = -1;
+            active_drawing = false;
+            drawing.Cursor = Cursors.Default;
+            ClickNum = 1;
+        }
+        private void cancelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CancelAll();
+        }
+
+        private void GraphicsForm_Load(object sender, EventArgs e)
+        {
+            InitializeContextMenu();
+            this.ContextMenuStrip = contextMenuStrip1;
         }
     }
 }

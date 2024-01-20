@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.drawing = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -35,6 +36,7 @@
             this.lineBtn = new System.Windows.Forms.Button();
             this.circleBtn = new System.Windows.Forms.Button();
             this.ellipseBtn = new System.Windows.Forms.Button();
+            this.menuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.drawing)).BeginInit();
             this.SuspendLayout();
             // 
@@ -44,6 +46,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.drawing.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.drawing.ContextMenuStrip = this.menuStrip;
             this.drawing.Location = new System.Drawing.Point(0, 0);
             this.drawing.Name = "drawing";
             this.drawing.Size = new System.Drawing.Size(1074, 512);
@@ -111,6 +114,13 @@
             this.ellipseBtn.UseVisualStyleBackColor = true;
             this.ellipseBtn.Click += new System.EventHandler(this.ellipseBtn_Click);
             // 
+            // menuStrip
+            // 
+            this.menuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(61, 4);
+            this.menuStrip.Text = "menuStrip";
+            // 
             // GraphicsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -127,6 +137,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "GraphicsForm";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.GraphicsForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.drawing)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -142,6 +153,7 @@
         private System.Windows.Forms.Button lineBtn;
         private System.Windows.Forms.Button circleBtn;
         private System.Windows.Forms.Button ellipseBtn;
+        private System.Windows.Forms.ContextMenuStrip menuStrip;
     }
 }
 
