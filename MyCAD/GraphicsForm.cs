@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using MyCAD.Entities;
 namespace MyCAD
 {
     public partial class GraphicsForm : Form
@@ -35,6 +35,7 @@ namespace MyCAD
         private LinkedList<Entities.Line> lines = new LinkedList<Entities.Line>();
         private LinkedList<Entities.Circle> circles = new LinkedList<Entities.Circle>();
         private LinkedList<Entities.Ellipse> ellipses = new LinkedList<Entities.Ellipse>();
+        private LinkedList<Entities.Arc> arcs = new LinkedList<Entities.Arc>();
         private Vector3 currentPosition;
         private Vector3 firstPoint;
         private Vector3 secondPoint;
@@ -50,7 +51,7 @@ namespace MyCAD
         }
 
         //Convert system point to world point
-        private Vector3 PointToCartesian(Point point)
+        private Vector3 PointToCartesian(System.Drawing.Point point)
         {
             return new Vector3(Pixel_to_Mn(point.X), Pixel_to_Mn(drawing.Height - point.Y));
         }
@@ -92,7 +93,7 @@ namespace MyCAD
                                     ClickNum++;
                                     break;
                                 case 2:
-                                    lines.AddLast(new Entities.Line(firstPoint, currentPosition));
+                                    lines.AddLast(new Line(firstPoint, currentPosition));
                                     points.AddLast(new Entities.Point(currentPosition));
                                     firstPoint = currentPosition;
                                     break;
@@ -108,7 +109,7 @@ namespace MyCAD
                                     break;
                                 case 2:
                                     double r = firstPoint.DistanceFrom(currentPosition);
-                                    circles.AddLast(new Entities.Circle(firstPoint, r));
+                                    circles.AddLast(new Circle(firstPoint, r));
                                     points.AddLast(new Entities.Point(currentPosition));
                                     ClickNum = 1;
                                     break;
@@ -126,7 +127,7 @@ namespace MyCAD
                                     ClickNum++;
                                     break;
                                 case 3:
-                                    Entities.Ellipse ellipse = Method.GetEllipse(firstPoint, secondPoint,currentPosition);
+                                    Ellipse ellipse = Method.GetEllipse(firstPoint, secondPoint,currentPosition);
                                     ellipses.AddLast(ellipse);
                                     ClickNum = 1;
                                     active_drawing = false;
@@ -146,12 +147,33 @@ namespace MyCAD
                                     ClickNum++;
                                     break;
                                 case 3:
-                                    Entities.Circle c = Methods.Method.GetCircleWith3Point(firstPoint, secondPoint, currentPosition);
+                                    Circle c = Method.GetCircleWith3Point(firstPoint, secondPoint, currentPosition);
                                     circles.AddLast(c);
-                                    CancelAll();
+                                    //if u wanna draw continue but don't need spress button again
+                                    ClickNum = 1;
+                                    //CancelAll();
                                     break;
                             }
+                             break;
+                        case 5: //Arc
+                            switch (ClickNum)
+                            {
+                                case 1:
+                                    firstPoint = currentPosition;
+                                    ClickNum++;
                                     break;
+                                case 2:
+                                    secondPoint = currentPosition;
+                                    ClickNum++;
+                                    break;
+                                case 3:
+                                    Arc a = Methods.Method.GetArcWith3Point(firstPoint, secondPoint, currentPosition);
+                                    arcs.AddLast(a);
+                                    ClickNum = 1;
+                                    //CancelAll();
+                                    break;
+                            }
+                            break;
                     }
                     drawing.Refresh();
                 }
@@ -180,14 +202,14 @@ namespace MyCAD
             //Draw all lines
             if(lines.Count > 0)
             {
-                foreach(Entities.Line line in lines)
+                foreach(Line line in lines)
                 {
                     e.Graphics.DrawLine(pen, line);
                 }     
             }
             if(circles.Count > 0)
             {
-                foreach(Entities.Circle circle in circles)
+                foreach(Circle circle in circles)
                 {
                     e.Graphics.DrawCircle(pen, circle);
                 }
@@ -195,9 +217,17 @@ namespace MyCAD
             //Draw all ellipse
             if (ellipses.Count > 0)
             {
-                foreach (Entities.Ellipse elp in ellipses)
+                foreach (Ellipse elp in ellipses)
                 {
                     e.Graphics.DrawEllipse(pen, elp);
+                }
+            }
+            //Draw all arc
+            if(arcs.Count > 0)
+            {
+                foreach(Arc arc in arcs)
+                {
+                    e.Graphics.DrawArc(pen, arc);
                 }
             }
             //Draw line extended
@@ -206,30 +236,30 @@ namespace MyCAD
                 case 1:
                     if(ClickNum == 2)
                     {
-                        Entities.Line line = new Entities.Line(firstPoint, currentPosition);
+                        Line line = new Line(firstPoint, currentPosition);
                         e.Graphics.DrawLine(extpen, line);
                     }
                     break;
                 case 2:
                     if(ClickNum == 2)
                     {
-                        Entities.Line line = new Entities.Line(firstPoint, currentPosition);
+                        Line line = new Line(firstPoint, currentPosition);
                         e.Graphics.DrawLine(extpen, line);
                         double r = firstPoint.DistanceFrom(currentPosition);
-                        Entities.Circle circle = new Entities.Circle(firstPoint, r);
+                        Circle circle = new Circle(firstPoint, r);
                         e.Graphics.DrawCircle(extpen, circle);
                     }
                     break;
                 case 3:
                     switch (ClickNum) {
                         case 2:
-                            Entities.Line line = new Entities.Line(firstPoint, currentPosition);
+                            Line line = new Line(firstPoint, currentPosition);
                             e.Graphics.DrawLine(extpen, line);
                             break;
                         case 3:
-                            Entities.Line line1 = new Entities.Line(firstPoint, currentPosition);
+                            Line line1 = new Line(firstPoint, currentPosition);
                             e.Graphics.DrawLine(extpen, line1);
-                            Entities.Ellipse elp = Method.GetEllipse(firstPoint, secondPoint, currentPosition);
+                            Ellipse elp = Method.GetEllipse(firstPoint, secondPoint, currentPosition);
                             e.Graphics.DrawEllipse(extpen, elp);
                             break;
                     }
@@ -238,12 +268,25 @@ namespace MyCAD
                     switch (ClickNum)
                     {
                         case 2:
-                            Entities.Line line = new Entities.Line(firstPoint, currentPosition);
+                            Line line = new Line(firstPoint, currentPosition);
                             e.Graphics.DrawLine(extpen, line);
                             break;
                         case 3:
-                            Entities.Circle c = Methods.Method.GetCircleWith3Point(firstPoint, secondPoint, currentPosition);
+                            Circle c = Method.GetCircleWith3Point(firstPoint, secondPoint, currentPosition);
                             e.Graphics.DrawCircle(extpen, c);
+                            break;
+                    }
+                            break;
+                case 5:
+                    switch (ClickNum)
+                    {
+                        case 2:
+                            Line line = new Line(firstPoint, currentPosition);
+                            e.Graphics.DrawLine(extpen, line);
+                            break;
+                        case 3:
+                            Arc arc = Method.GetArcWith3Point(firstPoint, secondPoint, currentPosition);
+                            e.Graphics.DrawArc(extpen, arc);
                             break;
                     }
                             break;
@@ -251,11 +294,11 @@ namespace MyCAD
             //Test line line intersection
             if (lines.Count > 0)
             {
-                foreach (Entities.Line l1 in lines)
+                foreach (Line l1 in lines)
                 {
-                    foreach (Entities.Line l2 in lines)
+                    foreach (Line l2 in lines)
                     {
-                        Vector3 v = Methods.Method.LineLineIntersection(l1, l2,true);
+                        Vector3 v = Method.LineLineIntersection(l1, l2,true);
                         Entities.Point p = new Entities.Point(v);
                         e.Graphics.DrawPoint(new Pen(Color.Red, 0), p);
                     }
@@ -311,6 +354,13 @@ namespace MyCAD
         private void circleBtn1_Click(object sender, EventArgs e)
         {
             DrawIndex = 4;
+            active_drawing = true;
+            drawing.Cursor = Cursors.Cross;
+        }
+
+        private void arcBtn_Click(object sender, EventArgs e)
+        {
+            DrawIndex = 5;
             active_drawing = true;
             drawing.Cursor = Cursors.Cross;
         }

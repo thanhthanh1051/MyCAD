@@ -38,6 +38,7 @@
             this.circleBtn = new System.Windows.Forms.Button();
             this.ellipseBtn = new System.Windows.Forms.Button();
             this.circleBtn1 = new System.Windows.Forms.Button();
+            this.arcBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.drawing)).BeginInit();
             this.SuspendLayout();
             // 
@@ -132,11 +133,22 @@
             this.circleBtn1.UseVisualStyleBackColor = true;
             this.circleBtn1.Click += new System.EventHandler(this.circleBtn1_Click);
             // 
+            // arcBtn
+            // 
+            this.arcBtn.Location = new System.Drawing.Point(1098, 324);
+            this.arcBtn.Name = "arcBtn";
+            this.arcBtn.Size = new System.Drawing.Size(137, 38);
+            this.arcBtn.TabIndex = 8;
+            this.arcBtn.Text = "Arc";
+            this.arcBtn.UseVisualStyleBackColor = true;
+            this.arcBtn.Click += new System.EventHandler(this.arcBtn_Click);
+            // 
             // GraphicsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1257, 627);
+            this.Controls.Add(this.arcBtn);
             this.Controls.Add(this.circleBtn1);
             this.Controls.Add(this.ellipseBtn);
             this.Controls.Add(this.circleBtn);
@@ -167,6 +179,7 @@
         private System.Windows.Forms.Button ellipseBtn;
         private System.Windows.Forms.ContextMenuStrip menuStrip;
         private System.Windows.Forms.Button circleBtn1;
+        private System.Windows.Forms.Button arcBtn;
     }
 }
 

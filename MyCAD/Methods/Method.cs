@@ -100,5 +100,40 @@ namespace MyCAD.Methods
 
             return new Circle(center, radius);
         }
+        public static Arc GetArcWith3Point(Vector3 p1, Vector3 p2, Vector3 p3)
+        {
+            double start, end;
+            Arc result = new Arc();
+
+            Circle c = GetCircleWith3Point(p1, p2, p3);
+
+            if(c.Radius > 0)
+            {
+                if(DeterminePointOfLine(new Line(p1, p3), p2) < 0){
+                    start = LineAngle(c.Center, p3);
+                    end = LineAngle(c.Center, p1);
+                }
+                else
+                {
+                    start = LineAngle(c.Center, p1);
+                    end = LineAngle(c.Center, p3);
+                }
+                if(end > start)
+                {
+                    end -= start;
+                }
+                else
+                {
+                    end += 360.0 - start;
+                }
+                result = new Arc(c.Center, c.Radius, start, end);
+            }
+            return result;
+        }
+
+        private static double DeterminePointOfLine(Line line, Vector3 v)
+        {
+            return (v.X - line.StartPoint.X)*(line.EndPoint.Y - line.StartPoint.Y) - (v.Y - line.StartPoint.Y) * (line.EndPoint.X - line.StartPoint.X);
+        }
     }
 }
