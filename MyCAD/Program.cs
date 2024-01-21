@@ -16,7 +16,7 @@ namespace MyCAD
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GraphicsForm());
+            Application.Run(new MainForm());
         }
     }
 }

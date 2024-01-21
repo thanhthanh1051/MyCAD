@@ -81,10 +81,10 @@ namespace MyCAD
                 {
                     switch(DrawIndex)
                     {
-                        case 0:
+                        case 6:
                             points.AddLast(new Entities.Point(currentPosition));
                             break;
-                        case 1://line
+                        case 3://line
                             switch (ClickNum)
                             {
                                 case 1:   
@@ -99,7 +99,7 @@ namespace MyCAD
                                     break;
                             }
                             break;
-                        case 2://circle
+                        case 21://circle
                             switch (ClickNum)
                             {
                                 case 1:
@@ -115,7 +115,7 @@ namespace MyCAD
                                     break;
                             }
                             break;
-                        case 3://Ellipes
+                        case 31://Ellipes
                             switch (ClickNum)
                             {
                                 case 1:
@@ -130,12 +130,12 @@ namespace MyCAD
                                     Ellipse ellipse = Method.GetEllipse(firstPoint, secondPoint,currentPosition);
                                     ellipses.AddLast(ellipse);
                                     ClickNum = 1;
-                                    active_drawing = false;
-                                    drawing.Cursor = Cursors.Default;
+                                    //active_drawing = false;
+                                    //drawing.Cursor = Cursors.Default;
                                     break;
                             }
                             break;
-                        case 4: //Circle with 3 point
+                        case 22: //Circle with 3 point
                             switch (ClickNum)
                             {
                                 case 1:
@@ -155,7 +155,7 @@ namespace MyCAD
                                     break;
                             }
                              break;
-                        case 5: //Arc
+                        case 11: //Arc
                             switch (ClickNum)
                             {
                                 case 1:
@@ -233,24 +233,26 @@ namespace MyCAD
             //Draw line extended
             switch (DrawIndex)
             {
-                case 1:
-                    if(ClickNum == 2)
-                    {
-                        Line line = new Line(firstPoint, currentPosition);
-                        e.Graphics.DrawLine(extpen, line);
-                    }
-                    break;
-                case 2:
-                    if(ClickNum == 2)
-                    {
-                        Line line = new Line(firstPoint, currentPosition);
-                        e.Graphics.DrawLine(extpen, line);
-                        double r = firstPoint.DistanceFrom(currentPosition);
-                        Circle circle = new Circle(firstPoint, r);
-                        e.Graphics.DrawCircle(extpen, circle);
-                    }
-                    break;
                 case 3:
+                    if(ClickNum == 2)
+                    {
+                        Line line = new Line(firstPoint, currentPosition);
+                        e.Graphics.DrawLine(extpen, line);
+                    }
+                    break;
+                case 21:
+                    switch(ClickNum)
+                    {
+                        case 2:
+                            Line line = new Line(firstPoint, currentPosition);
+                            e.Graphics.DrawLine(extpen, line);
+                            double r = firstPoint.DistanceFrom(currentPosition);
+                            Circle circle = new Circle(firstPoint, r);
+                            e.Graphics.DrawCircle(extpen, circle);
+                            break;
+                    }
+                    break;
+                case 31:
                     switch (ClickNum) {
                         case 2:
                             Line line = new Line(firstPoint, currentPosition);
@@ -264,7 +266,7 @@ namespace MyCAD
                             break;
                     }
                     break;
-                case 4:
+                case 22:
                     switch (ClickNum)
                     {
                         case 2:
@@ -277,7 +279,7 @@ namespace MyCAD
                             break;
                     }
                             break;
-                case 5:
+                case 11:
                     switch (ClickNum)
                     {
                         case 2:
@@ -304,35 +306,7 @@ namespace MyCAD
                     }
                 }
             }
-        }
-
-        private void pointBtn_Click(object sender, EventArgs e)
-        {
-            DrawIndex = 0;
-            active_drawing = true;
-            drawing.Cursor = Cursors.Cross;
-        }
-
-        private void lineBtn_Click(object sender, EventArgs e)
-        {
-            DrawIndex = 1;
-            active_drawing = true;
-            drawing.Cursor = Cursors.Cross;
-        }
-
-        private void circleBtn_Click(object sender, EventArgs e)
-        {
-            DrawIndex = 2;
-            active_drawing = true;
-            drawing.Cursor = Cursors.Cross;
-        }
-
-        private void ellipseBtn_Click(object sender, EventArgs e)
-        {
-            DrawIndex = 3;
-            active_drawing = true;
-            drawing.Cursor = Cursors.Cross;
-        }
+        }   
         private void CancelAll()
         {
             DrawIndex = -1;
@@ -344,23 +318,36 @@ namespace MyCAD
         {
             CancelAll();
         }
-
         private void GraphicsForm_Load(object sender, EventArgs e)
         {
             InitializeContextMenu();
             this.ContextMenuStrip = contextMenuStrip1;
         }
-
-        private void circleBtn1_Click(object sender, EventArgs e)
+        private void DrawBtn_Click(object sender, EventArgs e)
         {
-            DrawIndex = 4;
+            var item = sender as RibbonButton;
+            DrawIndex = drawPanel.Items.IndexOf(item);
             active_drawing = true;
             drawing.Cursor = Cursors.Cross;
         }
-
-        private void arcBtn_Click(object sender, EventArgs e)
+        private void CircleBtn_Click(object sender, EventArgs e)
         {
-            DrawIndex = 5;
+            var item = sender as RibbonButton;
+            DrawIndex = circleBtn.DropDownItems.IndexOf(item) + 21;
+            active_drawing = true;
+            drawing.Cursor = Cursors.Cross;
+        }
+        private void ArcBtn_Click(object sender, EventArgs e)
+        {
+            var item = sender as RibbonButton;
+            DrawIndex = arcBtn.DropDownItems.IndexOf(item) + 11;
+            active_drawing = true;
+            drawing.Cursor = Cursors.Cross;
+        }
+        private void EllipseBtn_Click(object sender, EventArgs e)
+        {
+            var item = sender as RibbonButton;
+            DrawIndex = ellipseBtn.DropDownItems.IndexOf(item) + 31;
             active_drawing = true;
             drawing.Cursor = Cursors.Cross;
         }
